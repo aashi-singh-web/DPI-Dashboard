@@ -1,48 +1,55 @@
 import {
-  FiCpu,
+  FiZap,
   FiFileText,
   FiSearch,
   FiLock,
   FiShield,
   FiBarChart2,
-  FiFilter,
+  FiUploadCloud,
 } from 'react-icons/fi';
 
 const features = [
   {
-    icon: FiCpu,
-    title: 'Multi-threaded engine',
-    desc: 'Packets are distributed across worker threads for high-throughput analysis of large captures.',
+    icon: FiZap,
+    emoji: '⚡',
+    title: 'Multi-Threaded Engine',
+    desc: 'Processes packets concurrently using multiple worker threads, enabling fast analysis of large network captures with improved throughput.',
   },
   {
     icon: FiFileText,
-    title: 'PCAP analysis',
-    desc: 'Parses Ethernet, IP, TCP, and UDP layers directly from standard .pcap capture files.',
+    emoji: '📄',
+    title: 'PCAP Analysis',
+    desc: 'Reads standard .pcap capture files and decodes Ethernet, IP, TCP, and UDP packets to extract network information.',
   },
   {
     icon: FiSearch,
-    title: 'Application detection',
-    desc: 'Identifies the application generating each flow using signature and heuristic matching.',
+    emoji: '🔍',
+    title: 'Application Detection',
+    desc: 'Recognizes real-world applications such as YouTube, GitHub, Google, Facebook, Discord, Spotify, and more using protocol inspection and TLS SNI analysis.',
   },
   {
     icon: FiLock,
-    title: 'TLS SNI extraction',
-    desc: 'Reads the Server Name Indication field from TLS ClientHello messages to classify encrypted traffic.',
+    emoji: '🔒',
+    title: 'TLS SNI Extraction',
+    desc: 'Extracts the Server Name Indication (SNI) from TLS ClientHello packets to identify encrypted HTTPS traffic without decrypting it.',
   },
   {
     icon: FiShield,
-    title: 'Blocking rules',
-    desc: 'Enforce policy by application, domain, or IP address — packets matching a rule are dropped.',
+    emoji: '🛡️',
+    title: 'Intelligent Blocking',
+    desc: 'Applies user-defined rules to block traffic based on applications, domains, or IP addresses and generates a filtered network capture.',
   },
   {
     icon: FiBarChart2,
-    title: 'Statistics',
-    desc: 'Detailed counters for total, TCP, UDP, forwarded, and dropped packets on every run.',
+    emoji: '📊',
+    title: 'Traffic Analytics',
+    desc: 'Provides detailed insights including packet counts, protocol distribution, detected applications, thread utilization, forwarding statistics, and dropped packets.',
   },
   {
-    icon: FiFilter,
-    title: 'Filtering',
-    desc: 'Produces a clean output .pcap containing only the traffic that passed your rules.',
+    icon: FiUploadCloud,
+    emoji: '📤',
+    title: 'Filtered Output',
+    desc: 'Generates a clean output PCAP containing only the traffic that satisfies the selected security policies, ready for further inspection in tools like Wireshark.',
   },
 ];
 
@@ -65,9 +72,9 @@ export default function Features() {
               <f.icon size={20} />
             </span>
             <h3 className="mt-4 font-mono text-sm font-semibold uppercase tracking-wide text-white">
-              {f.title}
+              {f.emoji} {f.title}
             </h3>
-            <p className="mt-2 text-sm text-slate-400">{f.desc}</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{f.desc}</p>
           </div>
         ))}
       </div>
