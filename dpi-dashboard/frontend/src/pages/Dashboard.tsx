@@ -93,6 +93,18 @@ export default function Dashboard() {
       {!data && !showPipeline && (
         <div className="mt-10 space-y-6">
           <UploadZone selectedFile={file} onFileSelected={setFile} />
+
+          <div className="glass p-5 text-center">
+            <p className="font-mono text-sm text-slate-400">Don&apos;t have a PCAP file?</p>
+            <a href="/test_dpi.pcap" download="test_dpi.pcap" className="btn-secondary mt-4">
+              📥 Download Demo PCAP
+            </a>
+            <p className="mx-auto mt-3 max-w-md text-xs leading-relaxed text-slate-500">
+              Use this sample capture to explore the DPI dashboard before analyzing your own
+              network traffic.
+            </p>
+          </div>
+
           <BlockingPanel rules={rules} onChange={setRules} />
 
           {error && (
@@ -144,7 +156,9 @@ export default function Dashboard() {
                       <FiLoader className="animate-spin" /> Generating…
                     </>
                   ) : (
-                    <>📄 Download PDF Report</>
+                    <>
+                      📄 Download PDF Report
+                    </>
                   )}
                 </button>
                 <button onClick={handleReset} className="btn-secondary">
