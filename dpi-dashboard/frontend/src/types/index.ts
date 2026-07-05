@@ -9,14 +9,21 @@ export interface ThreadStat {
   packets: number;
 }
 
+export interface DomainStat {
+  domain: string;
+  application: string;
+}
+
 export interface EngineStatistics {
   totalPackets: number;
+  totalBytes?: number;
   tcpPackets: number;
   udpPackets: number;
   forwarded: number;
   dropped: number;
   applications: ApplicationStat[];
   threads: ThreadStat[];
+  domains?: DomainStat[];
   raw?: {
     stdout: string;
     stderr: string;

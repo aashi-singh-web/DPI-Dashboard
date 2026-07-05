@@ -20,6 +20,7 @@ import ThreadLineChart from '../components/Charts/ThreadLineChart';
 import PacketPipelineAnimation from '../components/PacketPipelineAnimation';
 import { useAnalyze } from '../hooks/useAnalyze';
 import { downloadUrl } from '../services/api';
+import { generatePdfReport } from '../utils/generatePdfReport';
 import type { BlockingRules } from '../types';
 
 const PIPELINE_MIN_MS = 4500;
@@ -27,6 +28,7 @@ const PIPELINE_MIN_MS = 4500;
 export default function Dashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [rules, setRules] = useState<BlockingRules>({ apps: [], domains: [], ips: [] });
+  const [pdfLoading, setPdfLoading] = useState(false);
   const [showPipeline, setShowPipeline] = useState(false);
   const pipelineStartRef = useRef<number | null>(null);
   const { mutate, data, error, isPending, reset } = useAnalyze();
@@ -52,6 +54,16 @@ export default function Dashboard() {
     setShowPipeline(false);
     pipelineStartRef.current = null;
     reset();
+  }
+
+  async function handleDownloadPdf() {
+    if (!data) return;
+    setPdfLoading(true);
+    try {
+      await generatePdfReport(data, { pie: 'chart-pie', bar: 'chart-bar' });
+    } finally {
+      setPdfLoading(false);
+    }
   }
 
   return (
@@ -118,10 +130,23 @@ export default function Dashboard() {
                   <p className="font-mono text-xs text-slate-500">{data.originalName}</p>
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 <a href={downloadUrl(data.outputFile)} className="btn-primary">
                   <FiDownload /> Download output.pcap
                 </a>
+                <button
+                  onClick={handleDownloadPdf}
+                  disabled={pdfLoading}
+                  className="btn-primary disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {pdfLoading ? (
+                    <>
+                      <FiLoader className="animate-spin" /> Generating…
+                    </>
+                  ) : (
+                    <>📄 Download PDF Report</>
+                  )}
+                </button>
                 <button onClick={handleReset} className="btn-secondary">
                   New analysis
                 </button>
@@ -155,11 +180,11 @@ export default function Dashboard() {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="glass p-6">
+              <div id="chart-pie" className="glass p-6">
                 <h3 className="label-eyebrow mb-4">Applications</h3>
                 <AppPieChart applications={data.statistics.applications} />
               </div>
-              <div className="glass p-6">
+              <div id="chart-bar" className="glass p-6">
                 <h3 className="label-eyebrow mb-4">Packets by app</h3>
                 <PacketsBarChart applications={data.statistics.applications} />
               </div>
