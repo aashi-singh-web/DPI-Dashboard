@@ -20,3 +20,4 @@ backend/outputs/*
 # OS / logs
 .DS_Store
 *.log
+*.exe
