@@ -1,131 +1,126 @@
 # 🌐 DPI Dashboard
 
-A modern web dashboard for a **C++ Multi-Threaded Deep Packet Inspection (DPI) Engine** that allows users to upload PCAP files, inspect network traffic, apply blocking rules, visualize analytics, and download the filtered PCAP.
+> A modern React dashboard for a **C++ Multi-Threaded Deep Packet Inspection (DPI) Engine** that analyzes network traffic, applies filtering rules, and visualizes results through an interactive web interface.
+
+## 🚀 Live Demo
+
+🔗 https://dpi-dashboard-ean4.onrender.com
 
 ---
 
-## 🚀 Overview
+# 📖 Overview
 
-Think of this project like an **airport security checkpoint**.
+Imagine a **security checkpoint at an airport**.
 
-- Every packet entering the network is like a passenger entering the airport.
-- The DPI Engine acts as the security officer inspecting each passenger.
-- It identifies where packets are going, which application generated them, and whether they should be allowed or blocked.
-- The dashboard simply provides an easy way to interact with the engine visually.
+Every passenger goes through security before boarding a flight.
+
+Similarly, every **network packet** passes through the DPI Engine before reaching its destination.
+
+The engine inspects each packet, identifies the application or website it belongs to, checks it against security rules, and decides whether to **allow** or **block** it.
+
+The dashboard simply provides an easy and interactive way to control and visualize this entire process.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
 - 📂 Upload PCAP files
 - 🔍 Deep Packet Inspection
 - 🌐 Application Detection
 - 🔒 TLS SNI Extraction
-- 🛡️ Block by Application
-- 🌍 Block by Domain
-- 📍 Block by IP Address
-- 📊 Interactive Charts
-- 🧵 Multi-threaded Packet Processing
+- 🛡️ Block by Application, Domain & IP
+- 📊 Interactive Analytics Dashboard
+- 📄 PDF Report Generation
+- 🎬 Animated Packet Flow
 - 📥 Download Filtered PCAP
-- 📄 Export PDF Report
-- 🎬 Animated Packet Flow During Analysis
-- 📦 Built-in Demo PCAP Download
+- 🧵 Multi-threaded Processing
+- 📦 Built-in Demo PCAP
+- 🐳 Dockerized Deployment
 
 ---
 
-# 🏗 Architecture
+# 🏗 System Architecture
 
 ```text
                 User
                   │
                   ▼
-        React Dashboard (Frontend)
+        React Dashboard
                   │
-      Upload PCAP + Blocking Rules
-                  │
-                  ▼
-          Express Backend (Node.js)
-                  │
-      Launches C++ DPI Engine (.exe)
+          Upload PCAP
                   │
                   ▼
-       Multi-threaded DPI Engine
+        Express Backend
                   │
-      Packet Inspection & Filtering
-                  │
-                  ▼
-      Console Output + Output PCAP
+      Launches C++ Engine
                   │
                   ▼
-        Backend parses results
+      Multi-threaded DPI Engine
+                  │
+       Packet Inspection
                   │
                   ▼
-      Dashboard Visualizations
+   Statistics + Filtered PCAP
+                  │
+                  ▼
+      Interactive Dashboard
 ```
 
 ---
 
-# 📖 How It Works
+# ⚙️ How It Works
 
-## Step 1 — Upload a PCAP
+### 📂 1. Upload a PCAP
 
-The user uploads a network capture (`.pcap`) file.
+A **PCAP** is like a **CCTV recording of network activity**.
 
-Think of a PCAP as a CCTV recording of everything that happened on a network.
+Instead of watching people move through a building, it records how packets move through a network.
 
 ---
 
-## Step 2 — Choose Rules
+### 🛡️ 2. Choose Blocking Rules
 
-The user can decide to block:
+Select what should be blocked:
 
 - Applications
 - Domains
 - IP Addresses
 
-Example
-
-```
-Block:
-✓ YouTube
-✓ TikTok
-✓ facebook.com
-✓ 192.168.1.20
-```
+Just like configuring a firewall to decide which traffic is allowed.
 
 ---
 
-## Step 3 — DPI Engine Starts
+### 🔍 3. Deep Packet Inspection
 
-The backend launches the compiled C++ engine.
+The C++ engine examines every packet by:
 
-The engine then:
+- Reading protocol headers
+- Extracting TLS SNI
+- Identifying applications
+- Applying security rules
+- Generating statistics
+- Creating a filtered PCAP
 
-- Reads packets
-- Parses protocols
-- Detects applications
-- Applies blocking rules
-- Generates statistics
-- Creates a new filtered PCAP
+Think of it as a security officer checking every passenger's identity before allowing entry.
 
 ---
 
-## Step 4 — Dashboard
+### 📊 4. Dashboard Visualization
 
-The frontend displays
+The processed data is displayed through:
 
-- Total packets
-- TCP / UDP packets
-- Forwarded packets
-- Dropped packets
-- Application distribution
+- Packet statistics
+- Traffic charts
+- Application breakdown
 - Thread utilization
-- Packet charts
-- PDF report
+- PDF reports
+- Downloadable filtered PCAP
+
+Instead of reading console logs, everything is presented visually.
 
 ---
 
-## 📊 Packet Processing Flow
+# 📊 Packet Processing Flow
 
 ```text
 PCAP File
@@ -134,92 +129,40 @@ PCAP File
 Read Packets
     │
     ▼
-Ethernet
+Parse Ethernet/IP/TCP/UDP
     │
     ▼
-IP
+Extract TLS SNI
     │
     ▼
-TCP / UDP
+Identify Application
     │
     ▼
-TLS SNI Extraction
+Apply Blocking Rules
     │
-    ▼
-Application Detection
-    │
-    ▼
-Apply Rules
-    │
-    ├────────► Allowed
-    │
-    └────────► Dropped
-    │
-    ▼
+ ┌──┴──────────┐
+ │             │
+ ▼             ▼
+Allowed     Blocked
+ │             │
+ └──────┬──────┘
+        ▼
 Generate Statistics
-    │
-    ▼
-Output PCAP
+        │
+        ▼
+Filtered PCAP + Dashboard
 ```
 
 ---
 
 # 🛠 Tech Stack
 
-## Frontend
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Recharts
-
----
-
-## Backend
-
-- Node.js
-- Express.js
-- Multer
-- Child Process API
-
----
-
-## DPI Engine
-
-- C++
-- Multi-threading
-- PCAP Parsing
-- TCP/UDP Analysis
-- TLS SNI Extraction
-- Application Detection
-
----
-
-# 📈 Dashboard Features
-
-The dashboard provides:
-
-- Packet statistics
-- Traffic analytics
-- Application breakdown
-- Packet distribution charts
-- Thread utilization
-- Blocking summary
-- Download filtered PCAP
-- PDF report
-
----
-
-# 🎯 Demo
-
-A sample PCAP file is included.
-
-If you don't have your own capture file, simply click
-
-**Download Demo PCAP**
-
-and upload it to explore the dashboard.
+| Layer | Technologies |
+|--------|--------------|
+| Frontend | React • TypeScript • Vite • Tailwind CSS • Recharts |
+| Backend | Node.js • Express • Multer |
+| DPI Engine | C++17 • Multi-threading • PCAP Parsing • TLS SNI |
+| Deployment | Docker • Render |
 
 ---
 
@@ -228,89 +171,50 @@ and upload it to explore the dashboard.
 ```text
 dpi-dashboard
 │
-├── frontend
-│   ├── src
-│   ├── public
-│   └── package.json
-│
-├── backend
-│   ├── controllers
-│   ├── routes
-│   ├── utils
-│   ├── cpp
-│   │    └── dpi_engine.exe
-│   └── server.js
-│
+├── frontend/
+├── backend/
+│   ├── engine/
+│   ├── controllers/
+│   ├── routes/
+│   └── utils/
+├── Dockerfile
 └── README.md
 ```
 
 ---
 
-# ▶ Running Locally
-
-## Backend
+# ▶️ Run Locally
 
 ```bash
-cd backend
-npm install
-npm run dev
+git clone https://github.com/aashi-singh-web/DPI-Dashboard.git
+cd DPI-Dashboard
+
+docker build -t dpi-dashboard .
+docker run -p 5000:5000 dpi-dashboard
+```
+
+Open:
+
+```
+http://localhost:5000
 ```
 
 ---
 
-## Frontend
+# 🐳 Deployment
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+The project is fully containerized using **Docker** and deployed on **Render**.
+
+Every push to the **main** branch automatically rebuilds the Docker image and updates the live application.
 
 ---
 
-Open
-
-```
-http://localhost:5173
-```
-
----
-
-# 📦 Using the Dashboard
-
-1. Download the demo PCAP (optional).
-2. Upload a PCAP file.
-3. Choose blocking rules.
-4. Click **Analyze**.
-5. Watch the live analysis animation.
-6. Explore charts and statistics.
-7. Download the filtered PCAP.
-8. Export the PDF report.
-
----
-
-# 🚀 Deployment on Render
-
-See **[DEPLOY_RENDER.md](./DEPLOY_RENDER.md)** for the full walkthrough.
-
-1. In Render: **New → Blueprint**, connect this repo (uses root [`render.yaml`](./render.yaml)).
-2. After the first deploy, set environment variables:
-   - **Backend** `CORS_ORIGIN` → your frontend URL (e.g. `https://dpi-dashboard-frontend-xxxx.onrender.com`)
-   - **Frontend** `VITE_API_BASE_URL` → your backend URL (e.g. `https://dpi-dashboard-backend-xxxx.onrender.com`)
-3. Redeploy the frontend with **Clear build cache** (Vite bakes the API URL at build time).
-4. Commit a **Linux** engine binary as `backend/cpp/dpi_engine` — the Windows `.exe` only works locally.
-
-**Alternative:** deploy frontend on Vercel (`frontend/` root, set `VITE_API_BASE_URL` to your Render backend URL).
-
----
-
-# 💡 Real World Applications
+# 🌍 Real World Applications
 
 - Enterprise Network Monitoring
 - Security Operations Centers (SOC)
+- Firewall Rule Testing
 - Malware Traffic Analysis
-- Traffic Classification
-- Firewall Testing
-- Network Research
-- Educational Demonstrations
 - Digital Forensics
+- Network Research & Education
+
