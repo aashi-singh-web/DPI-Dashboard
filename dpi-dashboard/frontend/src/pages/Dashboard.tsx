@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiPackage,
@@ -17,22 +17,40 @@ import AppTable from '../components/AppTable';
 import AppPieChart from '../components/Charts/AppPieChart';
 import PacketsBarChart from '../components/Charts/PacketsBarChart';
 import ThreadLineChart from '../components/Charts/ThreadLineChart';
+import PacketPipelineAnimation from '../components/PacketPipelineAnimation';
 import { useAnalyze } from '../hooks/useAnalyze';
 import { downloadUrl } from '../services/api';
 import type { BlockingRules } from '../types';
 
+const PIPELINE_MIN_MS = 4500;
+
 export default function Dashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [rules, setRules] = useState<BlockingRules>({ apps: [], domains: [], ips: [] });
-  const { mutate, data, error, isPending, progress, reset } = useAnalyze();
+  const [showPipeline, setShowPipeline] = useState(false);
+  const pipelineStartRef = useRef<number | null>(null);
+  const { mutate, data, error, isPending, reset } = useAnalyze();
+
+  useEffect(() => {
+    if (isPending || !showPipeline) return;
+
+    const start = pipelineStartRef.current ?? Date.now();
+    const remaining = Math.max(0, PIPELINE_MIN_MS - (Date.now() - start));
+    const timer = setTimeout(() => setShowPipeline(false), remaining);
+    return () => clearTimeout(timer);
+  }, [isPending, showPipeline]);
 
   function handleAnalyze() {
     if (!file) return;
+    pipelineStartRef.current = Date.now();
+    setShowPipeline(true);
     mutate({ file, rules });
   }
 
   function handleReset() {
     setFile(null);
+    setShowPipeline(false);
+    pipelineStartRef.current = null;
     reset();
   }
 
@@ -46,7 +64,21 @@ export default function Dashboard() {
         Upload a capture, choose what to block, and the engine will do the rest.
       </p>
 
-      {!data && (
+      <AnimatePresence mode="wait">
+        {showPipeline && (
+          <motion.div
+            key="pipeline"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="mt-10"
+          >
+            <PacketPipelineAnimation />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!data && !showPipeline && (
         <div className="mt-10 space-y-6">
           <UploadZone selectedFile={file} onFileSelected={setFile} />
           <BlockingPanel rules={rules} onChange={setRules} />
@@ -61,34 +93,18 @@ export default function Dashboard() {
             </div>
           )}
 
-          {isPending && (
-            <div className="glass p-5">
-              <ProgressBar label="Uploading & analyzing" value={progress} total={100} color="cyan" />
-              <p className="mt-3 flex items-center gap-2 font-mono text-xs text-slate-500">
-                <FiLoader className="animate-spin" /> Running the engine — this can take a moment
-                on larger captures.
-              </p>
-            </div>
-          )}
-
           <button
             onClick={handleAnalyze}
-            disabled={!file || isPending}
+            disabled={!file}
             className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
           >
-            {isPending ? (
-              <>
-                <FiLoader className="animate-spin" /> Analyzing
-              </>
-            ) : (
-              <>Analyze Capture</>
-            )}
+            Analyze Capture
           </button>
         </div>
       )}
 
       <AnimatePresence>
-        {data && (
+        {data && !showPipeline && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
