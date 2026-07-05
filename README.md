@@ -218,3 +218,10 @@ Every push to the **main** branch automatically rebuilds the Docker image and up
 - Digital Forensics
 - Network Research & Education
 
+---
+ ## 📚 Detailed Documentation
+
+For an in-depth explanation of the **C++ Deep Packet Inspection Engine**, including its architecture, algorithms, packet parsing pipeline, multi-threading implementation, and design decisions, please refer to the companion repository:
+
+🔗 https://github.com/aashi-singh-web/Deep-packet-inspection
+
