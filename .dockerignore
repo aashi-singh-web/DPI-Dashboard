@@ -1,0 +1,13 @@
+backend/node_modules
+frontend/node_modules
+
+.git
+.gitignore
+.vscode
+
+backend/uploads
+backend/outputs
+
+**/*.exe
+
+*.log

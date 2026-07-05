@@ -1,0 +1,2 @@
+# This service is defined in the repo-root render.yaml Blueprint.
+# Deploy via: Render Dashboard → New → Blueprint → select this repository.
