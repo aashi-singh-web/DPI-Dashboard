@@ -6,7 +6,6 @@ it only adds a frontend and backend so the engine can be run entirely from a
 browser instead of a terminal.
 
 ```
-dpi-dashboard/
 ├── frontend/     React + TypeScript + Vite + Tailwind
 ├── backend/      Node.js + Express API that spawns the engine
 └── README.md     you are here

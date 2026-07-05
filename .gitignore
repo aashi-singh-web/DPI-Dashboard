@@ -5,14 +5,17 @@
 **/.env
 
 # Build output
-dpi-dashboard/frontend/dist/
+frontend/dist/
 *.tsbuildinfo
 
 # Runtime artifacts
-dpi-dashboard/backend/uploads/*
-!dpi-dashboard/backend/uploads/.gitkeep
-dpi-dashboard/backend/outputs/*
-!dpi-dashboard/backend/outputs/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/outputs/*
+!backend/outputs/.gitkeep
+
+# Local commit bootstrap helpers
+.commit-history/
 
 # OS / logs
 .DS_Store
