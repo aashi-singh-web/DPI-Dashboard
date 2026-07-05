@@ -11,6 +11,12 @@ import {
 } from 'react-icons/fi';
 import UploadZone from '../components/UploadZone';
 import BlockingPanel from '../components/BlockingPanel';
+import StatCard from '../components/StatCard';
+import ProgressBar from '../components/ProgressBar';
+import AppTable from '../components/AppTable';
+import AppPieChart from '../components/Charts/AppPieChart';
+import PacketsBarChart from '../components/Charts/PacketsBarChart';
+import ThreadLineChart from '../components/Charts/ThreadLineChart';
 import { useAnalyze } from '../hooks/useAnalyze';
 import { downloadUrl } from '../services/api';
 import type { BlockingRules } from '../types';
@@ -55,6 +61,16 @@ export default function Dashboard() {
             </div>
           )}
 
+          {isPending && (
+            <div className="glass p-5">
+              <ProgressBar label="Uploading & analyzing" value={progress} total={100} color="cyan" />
+              <p className="mt-3 flex items-center gap-2 font-mono text-xs text-slate-500">
+                <FiLoader className="animate-spin" /> Running the engine — this can take a moment
+                on larger captures.
+              </p>
+            </div>
+          )}
+
           <button
             onClick={handleAnalyze}
             disabled={!file || isPending}
@@ -94,6 +110,56 @@ export default function Dashboard() {
                   New analysis
                 </button>
               </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              <StatCard label="Total packets" value={data.statistics.totalPackets} icon={FiPackage} accent="cyan" />
+              <StatCard label="TCP" value={data.statistics.tcpPackets} icon={FiShare2} accent="cyan" />
+              <StatCard label="UDP" value={data.statistics.udpPackets} icon={FiShare2} accent="amber" />
+              <StatCard label="Forwarded" value={data.statistics.forwarded} icon={FiDownloadCloud} accent="signal" />
+              <StatCard label="Dropped" value={data.statistics.dropped} icon={FiAlertTriangle} accent="alert" />
+            </div>
+
+            <div className="glass p-6">
+              <h3 className="label-eyebrow mb-5">Blocked vs forwarded</h3>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <ProgressBar
+                  label="Forwarded"
+                  value={data.statistics.forwarded}
+                  total={data.statistics.totalPackets}
+                  color="signal"
+                />
+                <ProgressBar
+                  label="Dropped"
+                  value={data.statistics.dropped}
+                  total={data.statistics.totalPackets}
+                  color="alert"
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="glass p-6">
+                <h3 className="label-eyebrow mb-4">Applications</h3>
+                <AppPieChart applications={data.statistics.applications} />
+              </div>
+              <div className="glass p-6">
+                <h3 className="label-eyebrow mb-4">Packets by app</h3>
+                <PacketsBarChart applications={data.statistics.applications} />
+              </div>
+            </div>
+
+            <div className="glass p-6">
+              <h3 className="label-eyebrow mb-4">Thread usage</h3>
+              <ThreadLineChart threads={data.statistics.threads} />
+            </div>
+
+            <div>
+              <h3 className="label-eyebrow mb-4">Detected applications</h3>
+              <AppTable
+                applications={data.statistics.applications}
+                blockedApps={data.appliedRules.apps}
+              />
             </div>
           </motion.div>
         )}
