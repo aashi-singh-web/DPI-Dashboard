@@ -1,0 +1,43 @@
+# Render Blueprint — deploy backend + frontend from one repo.
+# Dashboard: New → Blueprint → connect https://github.com/aashi-singh-web/DPI-Dashboard
+#
+# After the first deploy, set the sync:false variables in the Render dashboard,
+# then redeploy the frontend (Vite bakes VITE_API_BASE_URL at build time).
+
+services:
+  - type: web
+    name: dpi-dashboard-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && (chmod +x ./cpp/dpi_engine 2>/dev/null || true)
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        sync: false
+      - key: DPI_ENGINE_PATH
+        value: ./cpp/dpi_engine
+      - key: MAX_UPLOAD_BYTES
+        value: 104857600
+      - key: ENGINE_TIMEOUT_MS
+        value: 120000
+
+  - type: web
+    name: dpi-dashboard-frontend
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false

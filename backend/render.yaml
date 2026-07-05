@@ -1,22 +1,2 @@
-services:
-  - type: web
-    name: dpi-dashboard-backend
-    runtime: node
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start
-    envVars:
-      - key: PORT
-        value: 10000
-      - key: CORS_ORIGIN
-        sync: false
-      - key: DPI_ENGINE_PATH
-        value: ./cpp/dpi_engine
-      - key: MAX_UPLOAD_BYTES
-        value: 104857600
-      - key: ENGINE_TIMEOUT_MS
-        value: 120000
-    disk:
-      name: dpi-dashboard-data
-      mountPath: /opt/render/project/src/backend/outputs
-      sizeGB: 1
+# This service is defined in the repo-root render.yaml Blueprint.
+# Deploy via: Render Dashboard → New → Blueprint → select this repository.

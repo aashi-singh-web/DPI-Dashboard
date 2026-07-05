@@ -289,6 +289,21 @@ http://localhost:5173
 
 ---
 
+# 🚀 Deployment on Render
+
+See **[DEPLOY_RENDER.md](./DEPLOY_RENDER.md)** for the full walkthrough.
+
+1. In Render: **New → Blueprint**, connect this repo (uses root [`render.yaml`](./render.yaml)).
+2. After the first deploy, set environment variables:
+   - **Backend** `CORS_ORIGIN` → your frontend URL (e.g. `https://dpi-dashboard-frontend-xxxx.onrender.com`)
+   - **Frontend** `VITE_API_BASE_URL` → your backend URL (e.g. `https://dpi-dashboard-backend-xxxx.onrender.com`)
+3. Redeploy the frontend with **Clear build cache** (Vite bakes the API URL at build time).
+4. Commit a **Linux** engine binary as `backend/cpp/dpi_engine` — the Windows `.exe` only works locally.
+
+**Alternative:** deploy frontend on Vercel (`frontend/` root, set `VITE_API_BASE_URL` to your Render backend URL).
+
+---
+
 # 💡 Real World Applications
 
 - Enterprise Network Monitoring
