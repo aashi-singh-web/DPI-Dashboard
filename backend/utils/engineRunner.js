@@ -2,7 +2,9 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const ENGINE_PATH = process.env.DPI_ENGINE_PATH || './cpp/dpi_engine';
+const ENGINE_PATH =
+  process.env.DPI_ENGINE_PATH ||
+  path.join(__dirname, '..', 'engine', 'build', 'dpi_engine');
 const TIMEOUT_MS = parseInt(process.env.ENGINE_TIMEOUT_MS || '120000', 10);
 
 // Only these keys may become --block-domain / --block-ip / --block-app flags.
