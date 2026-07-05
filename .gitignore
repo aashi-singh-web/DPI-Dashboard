@@ -1,0 +1,19 @@
+# Dependencies
+**/node_modules/
+
+# Environment
+**/.env
+
+# Build output
+dpi-dashboard/frontend/dist/
+*.tsbuildinfo
+
+# Runtime artifacts
+dpi-dashboard/backend/uploads/*
+!dpi-dashboard/backend/uploads/.gitkeep
+dpi-dashboard/backend/outputs/*
+!dpi-dashboard/backend/outputs/.gitkeep
+
+# OS / logs
+.DS_Store
+*.log
