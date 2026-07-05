@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-void text-slate-200 font-body antialiased;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(34, 211, 238, 0.08), transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(57, 255, 157, 0.05), transparent 45%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    @apply bg-cyan/30 text-white;
+  }
+  :focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-panel/60 backdrop-blur-xl border border-line/60 rounded-2xl;
+  }
+  .glass-hover {
+    @apply transition-all duration-300 hover:border-cyan/40 hover:shadow-glow;
+  }
+  .label-eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-cyan/70;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-cyan px-6 py-3 font-mono text-sm font-semibold uppercase tracking-wide text-void transition-all duration-200 hover:bg-cyan-soft hover:shadow-glow active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line px-6 py-3 font-mono text-sm font-semibold uppercase tracking-wide text-slate-200 transition-all duration-200 hover:border-cyan/50 hover:text-cyan;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Thin scrollbars matching the theme */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #05070a;
+}
+::-webkit-scrollbar-thumb {
+  background: #233040;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee55;
+}
