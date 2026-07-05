@@ -1,6 +1,6 @@
 # 🌐 DPI Dashboard
 
-> A modern React dashboard for a **C++ Multi-Threaded Deep Packet Inspection (DPI) Engine** that analyzes network traffic, applies filtering rules, and visualizes results through an interactive web interface.
+> An end-to-end **Deep Packet Inspection (DPI) platform** featuring a **high-performance multi-threaded C++ packet inspection engine**, an **Express.js backend**, a **React dashboard**, and **Dockerized cloud deployment** for analyzing, filtering, and visualizing network traffic from PCAP captures.
 
 ## 🚀 Live Demo
 
